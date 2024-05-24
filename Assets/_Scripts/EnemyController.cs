@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +8,21 @@ public class EnemyController : MonoBehaviour
 
     private Path thePath;
     private int currentPoint;
-    private bool reachedEnd;
+    private bool reachedEnd; //xác định điểm cuối của Path
+
+    public float timeBetweenAttacks, damagePerAttack;
+    private float attackCounter;
+
+    private Castle theCastle;
 
     // Start is called before the first frame update
     void Start()
     {
-        thePath = FindObjectOfType<Path>();
+        thePath = FindObjectOfType<Path>(); //Tìm các Object Path
+
+        theCastle = FindObjectOfType<Castle>(); //Điều này là để Enemy biết chúng thực sự cần tấn công cái gì 
+
+        attackCounter = timeBetweenAttacks;
     }
 
     // Update is called once per frame
@@ -33,6 +42,17 @@ public class EnemyController : MonoBehaviour
                     reachedEnd = true;
                 }
             }
-        } 
+        }
+        else
+        {
+            attackCounter -= Time.deltaTime;
+
+            if(attackCounter <= 0)
+            {
+                attackCounter = timeBetweenAttacks;
+
+                theCastle.TakeDamage(damagePerAttack);
+            }
+        }
     }
 }
