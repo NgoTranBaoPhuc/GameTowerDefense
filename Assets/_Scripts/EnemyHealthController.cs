@@ -9,6 +9,8 @@ public class EnemyHealthController : MonoBehaviour
 
     public Slider healthBar;
 
+    public int moneyOnDeath = 50;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,8 @@ public class EnemyHealthController : MonoBehaviour
             totalHealth = 0;
 
             Destroy(gameObject);
+
+            MoneyManager.instance.GiveMoney(moneyOnDeath);
         }
 
         healthBar.value = totalHealth;
