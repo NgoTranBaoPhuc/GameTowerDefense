@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (amountToSpawn > 0 && theCastle.currentHealth >0)
+        if (amountToSpawn > 0 && LevelManager.instance.levelActive)
         {
             spawnCouter -= Time.deltaTime;
             if (spawnCouter <= 0)
