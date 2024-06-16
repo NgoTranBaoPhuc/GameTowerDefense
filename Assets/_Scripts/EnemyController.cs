@@ -17,6 +17,9 @@ public class EnemyController : MonoBehaviour
 
     private int selectedAttackPoint;
 
+    public bool isFlying;
+    public float flyHeight;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,11 @@ public class EnemyController : MonoBehaviour
             theCastle = FindAnyObjectByType<Castle>();
         }//mỗi Spawn Enemy sẽ tấn công caslte của riêng nó 
 
+        if (isFlying)
+        {
+            transform.position += Vector3.up * flyHeight;
+            currentPoint = thePath.points.Length - 1;
+        }
 
         thePath = FindObjectOfType<Path>(); //Tìm các Object Path
 
@@ -48,21 +56,45 @@ public class EnemyController : MonoBehaviour
             {
                 transform.LookAt(thePath.points[currentPoint]);
 
-                transform.position = Vector3.MoveTowards(transform.position, thePath.points[currentPoint].position, moveSpeed * Time.deltaTime);
-
-                if (Vector3.Distance(transform.position, thePath.points[currentPoint].position) < .01f)
+                if (!isFlying)
                 {
-                    currentPoint++;
-                    if (currentPoint >= thePath.points.Length)
+                    transform.position = Vector3.MoveTowards(transform.position, thePath.points[currentPoint].position, moveSpeed * Time.deltaTime);
+
+                    if (Vector3.Distance(transform.position, thePath.points[currentPoint].position) < .01f)
                     {
-                        reachedEnd = true;
-                        selectedAttackPoint = Random.Range(0, theCastle.attackPoints.Length);
+                        currentPoint++;
+                        if (currentPoint >= thePath.points.Length)
+                        {
+                            reachedEnd = true;
+                            selectedAttackPoint = Random.Range(0, theCastle.attackPoints.Length);
+                        }
+                    }
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, thePath.points[currentPoint].position + (Vector3.up * flyHeight), moveSpeed * Time.deltaTime);
+
+                    if (Vector3.Distance(transform.position, thePath.points[currentPoint].position + (Vector3.up * flyHeight)) < .01f)
+                    {
+                        currentPoint++;
+                        if (currentPoint >= thePath.points.Length)
+                        {
+                            reachedEnd = true;
+                            selectedAttackPoint = Random.Range(0, theCastle.attackPoints.Length);
+                        }
                     }
                 }
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, theCastle.attackPoints[selectedAttackPoint].position, moveSpeed * Time.deltaTime);
+                if(!isFlying)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, theCastle.attackPoints[selectedAttackPoint].position, moveSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, theCastle.attackPoints[selectedAttackPoint].position + (Vector3.up * flyHeight), moveSpeed * Time.deltaTime);
+                }
 
                 attackCounter -= Time.deltaTime;
 

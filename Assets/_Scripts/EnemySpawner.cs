@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public EnemyController enemyToSpawn;
+    //public EnemyController enemyToSpawn;
+    public EnemyController[] enemiesToSpawn;
 
     public Transform spawnPoint;
     public float timeBetweenSpawns;
-    private float spawnCouter;
+    private float spawnCounter;
 
     public int amountToSpawn = 10;
 
     public Castle theCastle;
     public Path thePath;
+
     void Start()
     {
-        spawnCouter = timeBetweenSpawns;
+        spawnCounter = timeBetweenSpawns;
     }
 
     // Update is called once per frame
@@ -24,12 +26,12 @@ public class EnemySpawner : MonoBehaviour
     {
         if (amountToSpawn > 0 && LevelManager.instance.levelActive)
         {
-            spawnCouter -= Time.deltaTime;
-            if (spawnCouter <= 0)
+            spawnCounter -= Time.deltaTime;
+            if (spawnCounter <= 0)
             {
-                spawnCouter = timeBetweenSpawns;
+                spawnCounter = timeBetweenSpawns;
 
-                Instantiate(enemyToSpawn, spawnPoint.position, spawnPoint.rotation).Setup(theCastle, thePath);
+                Instantiate(enemiesToSpawn[Random.Range(0, enemiesToSpawn.Length)], spawnPoint.position, spawnPoint.rotation).Setup(theCastle, thePath);
 
                 amountToSpawn--;
             }

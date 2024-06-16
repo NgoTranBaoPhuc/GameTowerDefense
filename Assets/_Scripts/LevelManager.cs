@@ -13,16 +13,17 @@ public class LevelManager : MonoBehaviour
     public bool levelActive;
     private bool levelVictory;
 
-    private Castle theCastle;
+    private Castle[] theCastles;
     public List<EnemyHealthController> activeEnemies = new List<EnemyHealthController>();
-    private EnemySpawner enemySpawner;
+    //private EnemySpawner enemySpawner;
+    private EnemyWaveSpawner[] waveSpawners;
 
     public string nextLevel;
     void Start()
     {
-        theCastle = FindAnyObjectByType<Castle>();
-        enemySpawner = FindAnyObjectByType<EnemySpawner>();
-
+        theCastles = FindObjectsOfType<Castle>();
+        //enemySpawner = FindObjectOfType<EnemySpawner>();
+        waveSpawners = FindObjectsOfType<EnemyWaveSpawner>();
 
         levelActive = true;
     }
@@ -34,14 +35,31 @@ public class LevelManager : MonoBehaviour
     {
         if (levelActive)
         {
-            if (theCastle.currentHealth <= 0)
+            float totalCastleHealth = 0;
+            foreach(Castle cast in theCastles)
+            {
+                totalCastleHealth += cast.currentHealth;
+            }
+
+            if (totalCastleHealth <= 0)
             {
                 levelActive = false;
                 levelVictory = false;
                 
                 UIController.instance.towerButtons.SetActive(false);
             }
-            if (activeEnemies.Count == 0 && enemySpawner.amountToSpawn == 0)
+
+            bool wavesComplete = true;
+            foreach(EnemyWaveSpawner wavespawn in waveSpawners)
+            {
+                if(wavespawn.wavesToSpawn.Count > 0)
+                {
+                    wavesComplete = false;
+                }
+            }
+
+
+            if (activeEnemies.Count == 0 && wavesComplete)
             {
                 levelActive = false;
                 levelVictory = true;

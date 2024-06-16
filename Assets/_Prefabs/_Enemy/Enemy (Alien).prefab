@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bdac4e97d80a34384c93c0958f63b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 0.5
   timeBetweenAttacks: 0.5
   damagePerAttack: 10
 --- !u!136 &3563640673456736593
@@ -392,6 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalHealth: 15
   healthBar: {fileID: 6404949063652873162}
+  moneyOnDeath: 50
 --- !u!1 &6589931798970394698
 GameObject:
   m_ObjectHideFlags: 0

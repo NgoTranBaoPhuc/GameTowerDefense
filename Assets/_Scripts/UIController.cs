@@ -25,6 +25,9 @@ public class UIController : MonoBehaviour
     public string levelSelectScene, mainMenuScene;
 
     public GameObject pauseScrene;
+
+    public TMP_Text waveText;
+
     void Start()
     {
 
