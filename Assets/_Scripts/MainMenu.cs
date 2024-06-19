@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     public string newGameScene;
     void Start()
     {
-
+        AudioManager.instance.PlayMenuMusic();
     }
 
     // Update is called once per frame
