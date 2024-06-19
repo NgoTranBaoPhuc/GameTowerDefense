@@ -9,7 +9,7 @@ public class LevelSelectControll : MonoBehaviour
     public Transform minPos, maxPos;
     void Start()
     {
-
+        AudioManager.instance.PlayLevelSelectMusic();
     }
 
     // Update is called once per frame
